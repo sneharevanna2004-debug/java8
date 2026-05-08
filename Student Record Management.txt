@@ -1,0 +1,122 @@
+ Student Record Management App (React)
+
+ App.js
+
+Javascript id="v4qg1x"
+import React, { useState } from "react";
+import StudentForm from "./StudentForm";
+import StudentList from "./StudentList";
+
+function App() {
+
+  const [students, setStudents] = useState([]);
+
+  // Add Student
+  const addStudent = (name) => {
+    if (name.trim() !== "") {
+      setStudents([...students, name]);
+    }
+  };
+
+  // Delete Student
+  const deleteStudent = (index) => {
+    const updatedStudents = students.filter(
+      (_, i) => i !== index
+    );
+
+    setStudents(updatedStudents);
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Student Record Management</h1>
+
+      <StudentForm addStudent={addStudent} />
+
+      <StudentList
+        students={students}
+        deleteStudent={deleteStudent}
+      />
+    </div>
+  );
+}
+
+export default App;
+
+# StudentForm.js
+
+```javascript id="lc0r08"
+import React, { useState } from "react";
+
+function StudentForm({ addStudent }) {
+
+  const [name, setName] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    addStudent(name);
+
+    setName("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Enter student name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <button type="submit">
+        Add Student
+      </button>
+    </form>
+  );
+}
+
+export default StudentForm;
+
+
+# StudentList.js
+
+```javascript id="3e7u0o"
+import React from "react";
+
+function StudentList({ students, deleteStudent }) {
+
+  return (
+    <div>
+
+      <h2>Student List</h2>
+
+      {students.length === 0 ? (
+        <p>No students added</p>
+      ) : (
+        <ul>
+
+          {students.map((student, index) => (
+            <li key={index}>
+
+              {student}
+
+              <button
+                onClick={() => deleteStudent(index)}
+                style={{ marginLeft: "10px" }}
+              >
+                Delete
+              </button>
+
+            </li>
+          ))}
+
+        </ul>
+      )}
+
+    </div>
+  );
+}
+
+export default StudentList;
+```
